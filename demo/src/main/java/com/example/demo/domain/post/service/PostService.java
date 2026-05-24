@@ -14,6 +14,16 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto){
+        if (requestDto.getTitle() == null || requestDto.getTitle().isBlank()) {
+            throw new IllegalArgumentException("제목은 필수입니다");
+        }
+        if (requestDto.getContent() == null || requestDto.getContent().isBlank()) {
+            throw new IllegalArgumentException("내용은 필수입니다");
+        }
+        if (requestDto.getAuthor() == null || requestDto.getAuthor().isBlank()) {
+            throw new IllegalArgumentException("작성자는 필수입니다");
+        }
+
         Post post = Post.create(
                 requestDto.getTitle(),
                 requestDto.getContent(),
