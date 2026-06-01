@@ -1,0 +1,15 @@
+package com.example.demo.domain.user.dto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+
+@Schema(description = "회원가입 요청 DTO")
+public record SignUpRequestDto(
+    @Schema(description = "사용자 이메일", example = "test@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "이메일은 필수입니다")
+    String email,
+
+    @Schema(description = "비밀번호", example = "1234", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "비밀번호는 필수입니다")
+    String password
+) {}
