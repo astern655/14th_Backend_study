@@ -87,8 +87,8 @@ jobs:
           # 최신 이미지 Pull
           docker pull ${{ env.DOCKER_USERNAME }}/demo-app:latest
           
-          # 새 컨테이너 백그라운드 실행 (8080 포트 포워딩)
-          docker run -d --name demo-app -p 8080:8080 ${{ env.DOCKER_USERNAME }}/demo-app:latest
+          # 새 컨테이너 백그라운드 실행 (8080 포트 포워딩 + 동일 도커 네트워크 묶기)
+          docker run -d --name demo-app --network board-network -p 8080:8080 ${{ env.DOCKER_USERNAME }}/demo-app:latest
           
           # 사용되지 않는 이전 이미지 정리
           docker image prune -f
