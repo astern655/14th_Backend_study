@@ -9,9 +9,16 @@ public record LoginResponseDto(
     Long id,
 
     @Schema(description = "사용자 이메일", example = "test@example.com")
-    String email
+    String email,
+
+    @Schema(description = "JWT 토큰", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+    String token
 ) {
     public LoginResponseDto(UserEntity user) {
-        this(user.getId(), user.getEmail());
+        this(user.getId(), user.getEmail(), null);
+    }
+
+    public LoginResponseDto(UserEntity user, String token) {
+        this(user.getId(), user.getEmail(), token);
     }
 }

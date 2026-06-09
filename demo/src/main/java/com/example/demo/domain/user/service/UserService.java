@@ -8,6 +8,7 @@ import com.example.demo.domain.user.entity.UserEntity;
 import com.example.demo.domain.user.repository.UserRepository;
 import com.example.demo.global.exceprion.CustomException;
 import com.example.demo.global.exceprion.ErrorCode;
+import com.example.demo.global.config.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto requestDto) {
@@ -34,7 +36,8 @@ public class UserService {
                 .build();
 
         UserEntity savedUser = userRepository.save(user);
-        return new SignUpResponseDto(savedUser);
+        String token = jwtTokenProvider.createToken(savedUser.getId(), savedUser.getEmail());
+        return new SignUpResponseDto(savedUser, token);
     }
 
     @Transactional(readOnly = true)
@@ -46,6 +49,7 @@ public class UserService {
             throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
-        return new LoginResponseDto(user);
+        String token = jwtTokenProvider.createToken(user.getId(), user.getEmail());
+        return new LoginResponseDto(user, token);
     }
 }
